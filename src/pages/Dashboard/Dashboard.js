@@ -44,8 +44,8 @@ const Dashboard = (props) => {
 
   const editHandler = (id) => {};
 
-  const orderDeliverHandler = (id) => {
-    axios.patch(`/restaurant/deliver/${id}`).then((res) => {
+  const orderHandHandler = (id) => {
+    axios.patch(`/restaurant/hand/${id}`).then((res) => {
       const newOrder = res.data.order;
       console.log(newOrder);
       setOrders((prevOrders) => {
@@ -100,10 +100,12 @@ const Dashboard = (props) => {
         </div>
         <div>Total Price: ₹ {order.totalPrice}</div>
         <button
-          disabled={order.status === 1}
-          onClick={() => orderDeliverHandler(order._id)}
+          disabled={order.status >= 1 || !order.delivery}
+          onClick={() => orderHandHandler(order._id)}
         >
-          {order.status === 0 ? "Deliver" : "Delivered"}
+          {!order.delivery && "Delivery Not available Yet"}
+          {order.delivery && order.status === 0 && "Hand"}
+          {order.status >= 1 && "Handed"}
         </button>
       </div>
     );
