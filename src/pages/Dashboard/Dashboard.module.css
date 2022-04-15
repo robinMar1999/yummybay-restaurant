@@ -1,11 +1,16 @@
 .Dashboard {
+  margin-top: calc(var(--NavbarHeight) + 16px);
+}
+
+.Dashboard button {
+  cursor: pointer;
 }
 
 .row {
   height: 90px;
 }
 
-.row img {
+.row {
   height: 80px;
 }
 
@@ -21,6 +26,7 @@
   padding: 16px;
   width: 80%;
   margin: 16px auto;
+  border-radius: 4px;
 }
 
 .orderItems {
@@ -28,8 +34,142 @@
 }
 
 .orderItem {
-  width: 95%;
-  padding: 16px;
+  width: 80%;
+  padding: 32px;
+  display: flex;
+  justify-content: space-between;
   margin: 32px auto;
-  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.3);
+  border: 1px solid grey;
+  border-radius: 4px;
+}
+
+.DatePrice {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+
+.Dishes {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Dish {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 16px;
+  border: 1px solid black;
+  border-radius: 4px;
+  margin: 16px auto;
+}
+
+.Count {
+  font-weight: bold;
+}
+
+.X {
+  font-size: 14px;
+}
+
+.DishDetail {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.DishName {
+  font-weight: bold;
+}
+
+.DishImage {
+  height: 64px;
+}
+
+.DishImage img {
+  height: 100%;
+}
+
+.DishPrice {
+  font-weight: bold;
+}
+
+.DishTotal {
+  font-weight: bold;
+}
+
+.TotalPrice {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.heading {
+  text-align: center;
+}
+
+.switchButtons {
+  display: flex;
+  height: 64px;
+  align-items: center;
+}
+
+.SwitchButton {
+  height: 56px;
+  margin: 0 8px;
+
+  border: none;
+  outline: none;
+  padding: 16px;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.Active {
+  background-color: black;
+  color: white;
+}
+
+.SeeDetails {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.SeeDetails button {
+  border: none;
+  padding: 8px;
+  font-size: 20px;
+  border-radius: 4px;
+}
+
+.SeeDetails button:hover {
+  background-color: black;
+  color: white;
+}
+
+.DeliveryButton {
+  font-size: 20px;
+  border-radius: 4px;
+  padding: 8px;
+  border: none;
+}
+
+.DeliveryButton:hover {
+  background-color: black;
+  color: white;
+}
+
+.DeliveryButton:disabled {
+  cursor: not-allowed;
+  /* color: rgb(91, 90, 90); */
+  /* border: 1px solid grey; */
 }

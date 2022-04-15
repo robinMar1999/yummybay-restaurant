@@ -6,6 +6,7 @@ import Auth from "./pages/Auth/Auth";
 import UpdateProfile from "./pages/UpdateProfile/UpdateProfile";
 import AddDish from "./pages/AddDish/AddDish";
 import Navbar from "./components/Navbar/Navbar";
+import Dishes from "./pages/Dishes/Dishes";
 
 function App() {
   const [token, setToken] = useState(() => {
@@ -46,7 +47,7 @@ function App() {
           />
         )}
         {isLoggedIn && (
-          <Route path="/add-dish" element={<AddDish token={token} />} />
+          <Route path="/dishes" element={<Dishes token={token} />} />
         )}
         {isLoggedIn && <Route path="*" element={<Navigate to="/" replace />} />}
       </Routes>
