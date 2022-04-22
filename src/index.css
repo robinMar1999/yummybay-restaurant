@@ -1,8 +1,10 @@
 :root {
   --NavbarHeight: 64px;
   --NavIndex: 500;
+  --WarningIndex: 300;
   --BackdropIndex: 900;
   --ModalIndex: 1000;
+  --PhotoIndex: 200;
 }
 body {
   margin: 0;

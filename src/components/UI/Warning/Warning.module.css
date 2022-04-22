@@ -1,0 +1,10 @@
+.Warning {
+  position: fixed;
+  z-index: var(--WarningIndex);
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 16px;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.3);
+  background-color: antiquewhite;
+}

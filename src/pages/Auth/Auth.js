@@ -6,25 +6,26 @@ let interval = null;
 
 const Auth = (props) => {
   const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [timeLeft, setTimeLeft] = useState(120);
   const [tempToken, setTempToken] = useState(null);
   const [msg, setMsg] = useState(null);
   const emailRef = useRef();
-  const roleRef = useRef();
   const otpRef = useRef();
 
   const sendFormHandler = (e) => {
     e.preventDefault();
+    setIsSendingOtp(true);
     const email = emailRef.current.value;
-    const role = roleRef.current.value;
     axios
       .post("/auth/getotp", {
         email,
-        role,
+        role: "restaurant",
       })
       .then((response) => {
         setIsOtpSent(true);
+        setIsSendingOtp(false);
         setTempToken(response.data.token);
         interval = setInterval(() => {
           setTimeLeft((prev) => {
@@ -38,6 +39,7 @@ const Auth = (props) => {
         }, 1000);
       })
       .catch((err) => {
+        setIsSendingOtp(false);
         console.log(err);
       });
   };
@@ -60,7 +62,7 @@ const Auth = (props) => {
         clearInterval(interval);
         setIsVerified(true);
         setMsg("Phone number verified successfully");
-        props.setToken(res.data.token);
+        props.login(res.data.token, res.data.isProfileAdded);
       })
       .catch((err) => {
         console.log(err);
@@ -70,23 +72,47 @@ const Auth = (props) => {
     <div className={classes.Auth}>
       <h1>Welcome to YummyBay partners</h1>
       {!isOtpSent && (
-        <form onSubmit={sendFormHandler}>
-          <label htmlFor="role">Role</label>
-          <select name="role" id="role" ref={roleRef}>
-            <option value="restaurant">Restaurant</option>
-            <option value="delivery">Delivery</option>
-          </select>
-          <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="email" ref={emailRef} />
-          <button type="submit">Submit</button>
+        <form onSubmit={sendFormHandler} className={classes.Form}>
+          {isSendingOtp && (
+            <div className={classes.Loading}>Sending Otp...</div>
+          )}
+          <div className={classes.FormControl}>
+            <label htmlFor="email" className={classes.Label}>
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              ref={emailRef}
+              className={classes.Input}
+            />
+          </div>
+
+          <button type="submit" className={classes.Button}>
+            Submit
+          </button>
         </form>
       )}
       {isOtpSent && (
         <Fragment>
-          <form onSubmit={verifyFormHandler}>
-            <label htmlFor="otp">Enter the Otp: </label>
-            <input type="text" name="otp" id="otp" ref={otpRef} />
-            <button type="submit">Submit</button>
+          <form onSubmit={verifyFormHandler} className={classes.Form}>
+            <div className={classes.FormControl}>
+              <label htmlFor="otp" className={classes.Label}>
+                Enter the Otp:{" "}
+              </label>
+              <input
+                type="text"
+                name="otp"
+                id="otp"
+                ref={otpRef}
+                className={classes.Input}
+              />
+            </div>
+
+            <button type="submit" className={classes.Button}>
+              Submit
+            </button>
           </form>
           {!isVerified && <p>{timeLeft} seconds left.</p>}
           {isVerified && <p>{msg}</p>}

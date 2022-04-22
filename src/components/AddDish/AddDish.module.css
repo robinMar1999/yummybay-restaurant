@@ -1,0 +1,43 @@
+.AddDish {
+  width: 100%;
+  text-align: center;
+}
+
+.Form {
+  width: 70%;
+  border: 1px solid gray;
+  margin: 16px auto;
+  position: relative;
+  padding: 32px;
+}
+
+.FormControl {
+  display: flex;
+  margin: 16px auto;
+  width: 100%;
+  justify-content: center;
+}
+
+.FormControl label {
+  width: 30%;
+}
+
+.FormControl input {
+  width: 70%;
+}
+
+.Loading {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1px);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  color: rgb(162, 225, 236);
+  font-size: 48px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

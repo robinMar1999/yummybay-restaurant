@@ -8,7 +8,7 @@ const Dashboard = (props) => {
   const [areActive, setAreActive] = useState(true);
   const [orders, setOrders] = useState([]);
   const [showOrder, setShowOrder] = useState(null);
-
+  console.log(props);
   useEffect(() => {
     axios({
       method: "get",

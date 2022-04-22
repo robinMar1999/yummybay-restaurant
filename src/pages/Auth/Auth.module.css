@@ -1,3 +1,60 @@
-.Auth{
-  
+.Auth {
+  width: 100%;
+  margin: 96px auto;
+  text-align: center;
+}
+
+.Form {
+  margin: 32px auto;
+  width: 30vw;
+  border: 1px solid rgb(142, 137, 137);
+  padding: 16px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.Loading {
+  background-color: rgba(0, 0, 0, 0.3);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 24px;
+}
+
+.FormControl {
+  width: 100%;
+  margin: 16px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Label {
+  display: block;
+  margin: 0 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.Input {
+  outline: none;
+  font-size: 18px;
+}
+
+.Button {
+  background: rgb(22, 116, 159);
+  color: white;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  font-size: 20px;
+  padding: 8px;
+  border-radius: 4px;
 }

@@ -23,7 +23,7 @@ const Navbar = (props) => {
       >
         Dishes
       </NavLink>
-      <button onClick={props.logoutClick}>Logout</button>
+      <button onClick={props.logout}>Logout</button>
     </div>
   );
 };

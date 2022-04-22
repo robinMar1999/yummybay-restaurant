@@ -1,16 +1,31 @@
-import React, { useRef, useState } from "react";
-import classes from "./UpdateProfile.module.css";
+import React, { useEffect, useRef, useState } from "react";
+import classes from "./AddProfile.module.css";
 import axios from "axios";
 
-const UpdateProfile = (props) => {
+const AddProfile = (props) => {
   const nameRef = useRef();
   const addressRef = useRef();
   const phoneRef = useRef();
   const photoRef = useRef();
+
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
-  const [addingPhoto, setAddingPhoto] = useState(false);
-  const [addingPhotoError, setAddingPhotoError] = useState(false);
-  const [addingError, setAddingError] = useState(false);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        console.log(latitude, longitude);
+        setLatitude(latitude);
+        setLongitude(longitude);
+      },
+      (err) => {
+        console.log(err.code, err.message);
+      }
+    );
+  });
 
   const formSubmitHandler = async (e) => {
     e.preventDefault();
@@ -18,13 +33,16 @@ const UpdateProfile = (props) => {
     const name = nameRef.current.value;
     const address = addressRef.current.value;
     const phone = phoneRef.current.value;
-    // const photo = photoRef.current.files[0];
+    const photo = photoRef.current.files[0];
     const data = new FormData();
     data.append("name", name);
     data.append("address", address);
     data.append("phone", phone);
+    data.append("photo", photo);
+    data.append("latitude", latitude);
+    data.append("longitude", longitude);
     axios({
-      method: "patch",
+      method: "post",
       url: "/restaurant/profile",
       data: data,
       headers: {
@@ -33,53 +51,20 @@ const UpdateProfile = (props) => {
       },
     })
       .then(function (response) {
-        setIsAdding(false);
+        props.setIsProfileAdded(true);
         console.log(response);
       })
       .catch(function (response) {
         //handle error
-        setAddingError(true);
         console.log(response);
       });
   };
-
-  const photoSubmitHandler = async (e) => {
-    e.preventDefault();
-    setAddingPhoto(true);
-    const photo = photoRef.current.files[0];
-    const data = new FormData();
-    data.append("photo", photo);
-    axios({
-      method: "patch",
-      url: "/restaurant/profile/photo",
-      data: data,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: props.token,
-      },
-    })
-      .then(function (response) {
-        setAddingPhoto(false);
-        console.log(response);
-      })
-      .catch(function (response) {
-        //handle error
-        setAddingPhotoError(true);
-        console.log(response);
-      });
-  };
-
-  const content = addingError ? "Some Error Occurred" : "Updating Profile...";
-
-  const photoContent = addingPhotoError
-    ? "Some Error Occurred"
-    : "Updating Profile Picture...";
 
   return (
-    <div className={classes.UpdateProfile}>
-      <h1>Update Your Profile</h1>
+    <div className={classes.AddProfile}>
+      <h1>Create Your Profile</h1>
       <form onSubmit={formSubmitHandler} className={classes.Form}>
-        {isAdding && <div className={classes.isAdding}>{content}</div>}
+        {isAdding && <div className={classes.isAdding}>Adding Profile...</div>}
         <div className={classes.FormControl}>
           <label htmlFor="name">Name of Restaurant: </label>
           <input type="text" name="name" id="name" ref={nameRef} />
@@ -98,13 +83,6 @@ const UpdateProfile = (props) => {
           />
         </div>
         <div className={classes.FormControl}>
-          <button type="submit">Submit</button>
-        </div>
-      </form>
-
-      <form onSubmit={photoSubmitHandler} className={classes.Form}>
-        {addingPhoto && <div className={classes.isAdding}>{photoContent}</div>}
-        <div className={classes.FormControl}>
           <label htmlFor="photo">Photo: </label>
           <input type="file" name="photo" id="photo" ref={photoRef} />
         </div>
@@ -115,4 +93,4 @@ const UpdateProfile = (props) => {
     </div>
   );
 };
-export default UpdateProfile;
+export default AddProfile;
