@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import classes from "./AddProfile.module.css";
 import axios from "axios";
 
@@ -7,10 +7,14 @@ const AddProfile = (props) => {
   const addressRef = useRef();
   const phoneRef = useRef();
   const photoRef = useRef();
+  const latitudeRef = useRef();
+  const longitudeRef = useRef();
 
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+
   const [isAdding, setIsAdding] = useState(false);
+  const [addingCustomPosition, setAddingCustomPosition] = useState(false);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -39,8 +43,14 @@ const AddProfile = (props) => {
     data.append("address", address);
     data.append("phone", phone);
     data.append("photo", photo);
-    data.append("latitude", latitude);
-    data.append("longitude", longitude);
+    if (addingCustomPosition) {
+      data.append("latitude", latitudeRef.current.value);
+      data.append("longitude", longitudeRef.current.value);
+    } else {
+      data.append("latitude", latitude);
+      data.append("longitude", longitude);
+    }
+
     axios({
       method: "post",
       url: "/restaurant/profile",
@@ -58,6 +68,10 @@ const AddProfile = (props) => {
         //handle error
         console.log(response);
       });
+  };
+
+  const toggleCustomPosition = () => {
+    setAddingCustomPosition((prev) => !prev);
   };
 
   return (
@@ -86,6 +100,37 @@ const AddProfile = (props) => {
           <label htmlFor="photo">Photo: </label>
           <input type="file" name="photo" id="photo" ref={photoRef} />
         </div>
+        <div className={classes.FormControl}>
+          <button
+            type="button"
+            onClick={toggleCustomPosition}
+            className={classes.Toggle}
+          >
+            Add Custom Position
+          </button>
+        </div>
+        {addingCustomPosition && (
+          <Fragment>
+            <div className={classes.FormControl}>
+              <label htmlFor="latitude">Latitude: </label>
+              <input
+                type="number"
+                name="latitude"
+                id="latitude"
+                ref={latitudeRef}
+              />
+            </div>
+            <div className={classes.FormControl}>
+              <label htmlFor="longitude">Longitude: </label>
+              <input
+                type="number"
+                name="longitude"
+                id="latitude"
+                ref={longitudeRef}
+              />
+            </div>
+          </Fragment>
+        )}
         <div className={classes.FormControl}>
           <button type="submit">Submit</button>
         </div>

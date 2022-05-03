@@ -38,7 +38,7 @@ const AddDish = (props) => {
 
   return (
     <div className={classes.AddDish}>
-      <h1>Edit Photo here</h1>
+      <h1>Edit Dish here</h1>
       <form onSubmit={addDishHandler} className={classes.Form}>
         {adding && <div className={classes.Loading}>Updating Dish...</div>}
         <div className={classes.FormControl}>

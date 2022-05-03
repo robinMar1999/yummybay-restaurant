@@ -27,6 +27,41 @@ const Dashboard = (props) => {
       });
   }, []);
 
+  useEffect(() => {
+    if (props.socket) {
+      props.socket.on("new-order", (order) => {
+        let audio = new Audio("/Notification.mp3");
+        audio.play();
+        console.log(order);
+        addNewOrder(order);
+      });
+      props.socket.on("delivery-available", (order) => {
+        console.log(order);
+        updateOrder(order);
+      });
+    }
+  }, [props.socket]);
+
+  const addNewOrder = (order) => {
+    setOrders((prevOrders) => {
+      return [...prevOrders, order];
+    });
+  };
+
+  const updateOrder = (updatedOrder) => {
+    setOrders((prevOrders) => {
+      const newOrders = [];
+      for (let order of prevOrders) {
+        if (order._id === updatedOrder._id) {
+          newOrders.push(updatedOrder);
+        } else {
+          newOrders.push(order);
+        }
+      }
+      return newOrders;
+    });
+  };
+
   const orderHandHandler = (id) => {
     axios.patch(`/restaurant/hand/${id}`).then((res) => {
       const newOrder = res.data.order;
@@ -88,11 +123,11 @@ const Dashboard = (props) => {
           </div>
           <button
             className={classes.DeliveryButton}
-            disabled={order.status >= 1 || !order.delivery}
+            disabled={order.status >= 1 || !order.deliveryId}
             onClick={() => orderHandHandler(order._id)}
           >
-            {!order.delivery && "Delivery Not available Yet"}
-            {order.delivery && order.status === 0 && "Hand"}
+            {!order.deliveryId && "Delivery Not available Yet"}
+            {order.deliveryId && order.status === 0 && "Hand"}
             {order.status >= 1 && "Handed"}
           </button>
         </div>

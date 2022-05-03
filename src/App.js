@@ -8,12 +8,13 @@ import Navbar from "./components/Navbar/Navbar";
 import Dishes from "./pages/Dishes/Dishes";
 import AddProfile from "./pages/AddProfile/AddProfile";
 import Warning from "./components/UI/Warning/Warning";
+import { io } from "socket.io-client";
 
 function App() {
   const [isProfileAdded, setIsProfileAdded] = useState(() => {
     const isProfileAdded = localStorage.getItem("isProfileAdded");
     console.log(isProfileAdded);
-    return isProfileAdded === "false" ? false : true;
+    return !isProfileAdded || isProfileAdded === "false" ? false : true;
   });
   const [token, setToken] = useState(() => {
     // getting localstorage value
@@ -21,6 +22,21 @@ function App() {
     console.log(token);
     return token;
   });
+  const [socket, setSocket] = useState(null);
+  useEffect(() => {
+    if (token) {
+      const socket = io("http://localhost:5000/restaurant", {
+        auth: {
+          token: token,
+        },
+      });
+      socket.on("connect", () => {
+        console.log(`You connected with socket id ${socket.id}`);
+      });
+      setSocket(socket);
+      return () => socket.close();
+    }
+  }, []);
 
   const profileAddedHandler = (value) => {
     localStorage.setItem("isProfileAdded", value);
@@ -70,7 +86,10 @@ function App() {
         )}
 
         {isLoggedIn && isProfileAdded && (
-          <Route path="/" element={<Dashboard token={token} />} />
+          <Route
+            path="/"
+            element={<Dashboard token={token} socket={socket} />}
+          />
         )}
 
         {isLoggedIn && isProfileAdded && (
