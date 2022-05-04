@@ -25,7 +25,7 @@ function App() {
   const [socket, setSocket] = useState(null);
   useEffect(() => {
     if (token) {
-      const socket = io("http://localhost:5000/restaurant", {
+      const socket = io("https://yummybay.herokuapp.com/restaurant", {
         auth: {
           token: token,
         },
